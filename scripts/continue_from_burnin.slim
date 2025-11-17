@@ -1,4 +1,7 @@
-// 1. initialize everything - copied directly 
+// 1. 
+////////////////////////////////////////////////////
+//	1. Initialise everything //////////////////
+//////////////////////////////////////////////////// 
 initialize() {
 	if (exists("slimgui")) {
 		// Carrying capacities
@@ -74,14 +77,17 @@ initialize() {
 	initializeRecombinationRate(rates, ends);
 }
 
-// 2. Import burnin population
+////////////////////////////////////////////////////
+//	2. Import burnin population //////////////////
+////////////////////////////////////////////////////
 1 early() {
 	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\text_file_GSE_simulation_snapshot_55600.txt");
 }
 
-// need to add stuff for gse too
+////////////////////////////////////////////////////
+//	3. reproduction for GSE //////////////////
+////////////////////////////////////////////////////
 
-// add reproduction and fitness (?) for gse
 reproduction(p1) {
 	if (sim.cycle % 2 == 0){ //reproduction every 2 years - seems to reduce poppulation size by a lot
 		// get males and females and randomize their order
@@ -127,6 +133,9 @@ reproduction(p1) {
 	// disable this callback for this cycle
 	self.active = 0;
 }
+////////////////////////////////////////////////////
+//	4. Try to do fitnesss scaling for pops //////////////////
+////////////////////////////////////////////////////
 
 early() {
 	// list subpops that exist at a given point
@@ -134,13 +143,13 @@ early() {
 	if (exists("p1")) subpops = c(subpops, p1);
 	if (exists("p2")) subpops = c(subpops, p2);
 	for (s in subpops) {
-	 inds = s.individuals;
-	 // skip empty subpops
-	 if (size(inds) == 0) {
-            s.fitnessScaling = 1.0; // fallback
-            continue;
-        }
-	 
+		inds = s.individuals;
+		// skip empty subpops
+		if (size(inds) == 0) {
+			s.fitnessScaling = 1.0; // fallback
+			continue;
+		}
+		
 		// age and sex specific survival
 		//0.01 for females, no info on males; 0.05 to be conservative
 		L_F= c(0.5,0.2,0.05,0.05,0.15,0.15,0.15,0.15,0.15,0.15,0.4,0.4,0.4,0.4,1);
@@ -170,37 +179,18 @@ early() {
 		
 		
 		K = s.getValue("K");
-		//inds = s.individuals;
 		inds_m = s.individuals[m];
 		inds_f = s.individuals[f];
-		//s.fitnessScaling = K / sum(inds.fitnessScaling); // seems to stay closer to the K I want
-		//s.fitnessScaling = K /s.individualCount; //works
-
-		//from vaquita paper, to avoid fitness of all individuals increasing to 1
-		//in case of severe decline and to include viability selection and
-		//impacts of inbreeding depression(Robinson et al. 2022)
-
-		//s.fitnessScaling = min(K /(s.individualCount * mean(c(survival_m, survival_f))), 1.0);
-		//sometimes fails as 's.individualCount' =0
+		
 		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f))); //works
-
-		//s.individuals.fitnessScaling = min(K /s.individualCount * mean(c(survival_m,survival_f)), 1.0); //does not work
+		
 		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
 	}
 }
-		
-		
-		// s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f))); //works
-		
-		//s.individuals.fitnessScaling = min(K /s.individualCount * mean(c(survival_m,survival_f)), 1.0); //does not work
-		// s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
-	//}
-//}
 
-
-// 3. Crater (p2) 
-
-// 4.  make crater pop
+////////////////////////////////////////////////////
+//	5. Make crater pop  events //////////////////
+////////////////////////////////////////////////////
 55601 late() {
 	sim.addSubpop("p2", 0).setValue("K", 100);
 	migrants_F = p1.sampleIndividuals(50, sex="F", minAge=2, maxAge=10);
@@ -225,7 +215,9 @@ early() {
 55801 late() { p2.setValue("K", KC_6); }
 55802 late() { p2.setValue("K", KC_7); catn("Crater 2021: " + p2.individualCount); }
 
-//reproduction for crater
+////////////////////////////////////////////////////
+//	5. reproduction for crater //////////////////
+////////////////////////////////////////////////////
 reproduction(p2) {
 	if (sim.cycle % 2 == 0){
 		// get males and females and randomize their order
@@ -274,7 +266,9 @@ reproduction(p2) {
 }
 
 
-// zoo population
+////////////////////////////////////////////////////
+//	7. Zoo population with high fitness scaling //////////////////
+////////////////////////////////////////////////////
 55691 late() {
 	sim.addSubpop("p3", 0).setValue("K", 50);
 	migrants_F_zoo = p1.sampleIndividuals(5, sex="F", minAge=2);
