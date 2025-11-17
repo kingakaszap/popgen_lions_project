@@ -1,0 +1,7 @@
+This folder contains the 40 replicates of the GSE population after:
+  - burnin period of 50 000 cycles/years with carrying capacity of K=5000.
+  - demograpahic evolution of 5000 cycles/years with K=5000 corresponding approximalty to the period 5000-600BP
+  - demographic evolution of 600 cycles/years with K = 2000 corresponding to the period 600-0 BP
+
+The statistics are recorded only during the last 600 cycles
+  
