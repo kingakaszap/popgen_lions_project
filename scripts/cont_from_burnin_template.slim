@@ -331,6 +331,9 @@ function (s) getStats(o pop, i sampSize)
 {
 	i = sample(pop.individuals, sampSize, F);
 
+    // i = pop.individuals
+	// to try to sample all inds, made my slim freeze
+
 	m = sortBy(i.haplosomes.mutations, "position"); //get all mutations in sample
 	m_uniq = unique(m); // get rid of redundant muts
 	DAF = sapply(m_uniq, "sum(m == applyValue);"); // count number of each mut in pop
@@ -446,4 +449,5 @@ mutationsOfType(m5));
 
 
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
+
 }
