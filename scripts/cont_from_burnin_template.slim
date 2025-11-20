@@ -196,12 +196,14 @@ early() {
 55560 late() { p2.setValue("K", KC_4); catn("Crater 1979: " + p2.individualCount); }
 55562 late() { p2.setValue("K", KC_5); catn("Crater 1981: " + p2.individualCount); }
 55574 late() { p2.takeMigrants(p1.sampleIndividuals(1, sex="M", minAge=4, maxAge=10)); catn("Crater 1993: " + p2.individualCount); }
-55581 late() { p2.setValue("K", KC_6); catn("Crater 2000: " + p2.individualCount); }
+// 55581 late() { p2.setValue("K", KC_6); catn("Crater 2000: " + p2.individualCount); }
+55581 late() { p2.setValue("K", 60); catn("Crater 2000: " + p2.individualCount); } // changed this - check if the original (above) works
 55594 late() { p2.takeMigrants(p1.sampleIndividuals(4, sex="M", minAge=4, maxAge=10)); catn("Crater 2013: " + p2.individualCount); }
 55596 late() { p2.takeMigrants(p1.sampleIndividuals(1, sex="M", minAge=4, maxAge=10)); }
 55599 late() { p2.takeMigrants(p1.sampleIndividuals(2, sex="M", minAge=4, maxAge=10)); }
 55601 late() { p2.setValue("K", 60); } // changed to keep around 60 for 2020
 55602 late() { p2.setValue("K", KC_7); catn("Crater 2021: " + p2.individualCount); }
+// changed some things here, initially got a pop of around 100 while it should be 60 in 2021
 
 ////////////////////////////////////////////////////
 //	5. reproduction for crater //////////////////
@@ -289,6 +291,12 @@ reproduction(p3) {
 			for (i in seqLen(nOffspring)) {
 				p3.addCrossed(female, father, sex=0.5);
 			}}}}
+
+// save source populations at present / 2021?? ----- does this save all pops?? i hope
+55601 late() {
+    print("saving simulation");
+    sim.outputFull("C:/Users/Kinga/Desktop/popgen/start_pops_2021/start_pop_simulation_snapshot_55601_r" + burnin_id + ".txt");
+}
 
 ////////////////////////
 // Logs and Stats ////
@@ -451,3 +459,4 @@ mutationsOfType(m5));
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
