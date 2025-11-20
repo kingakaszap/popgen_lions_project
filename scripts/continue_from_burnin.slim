@@ -19,7 +19,7 @@ initialize() {
 		defineConstant("KC_6", 50);
 		defineConstant("KC_7", 100);
 		
-		// add stuff that can be defined in command line??
+		// add stuff that can be defined in terminal
 		// run terminal like this: slim -d SEED=7 -d burnin_id= x, script.txt (txt??)
 
 		defineConstant("burnin_id");
@@ -39,10 +39,12 @@ initialize() {
 	defineConstant("h_wkDel", 0.4);
 	defineConstant("sampleSize", 10);
 	// change this later to sample whole crater pop for statistics
-	
+
+    // for csv file with population statistics
 	defineConstant("Out", "C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/source_pops" + "new_populations" + "M=" + M + "_KF=" + KC_7 + "_" + getSeed() + ".csv");
-	
-	defineConstant("Burnin_to_import","C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/burnins/Source_pop_simulation_snapshot_55400_" + burnin_id + ".txt");
+
+    // for which burnin to import, where the id has been defined in the format of r1, r1 etc. in terminal
+	defineConstant("burnin_to_import","C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/burnins/Source_pop_simulation_snapshot_55400_" + burnin_id + ".txt");
 	
 	// dont forget to change this to my own filepath
 	
@@ -86,8 +88,10 @@ initialize() {
 //	2. Import burnin population //////////////////
 ////////////////////////////////////////////////////
 1 early() {
+    // could do this better by using the burnin_to_import constant, i think
 	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\popgen\\Source_pop_simulation_snapshot_55400_" + "burnin_id" + ".txt");}
 	// ends at 55400 - move everything back by 200 years
+     
 
 ////////////////////////////////////////////////////
 //	3. reproduction for GSE //////////////////
@@ -210,7 +214,8 @@ early() {
 55596 late() { p2.takeMigrants(p1.sampleIndividuals(1, sex="M", minAge=4, maxAge=10)); }
 55599 late() { p2.takeMigrants(p1.sampleIndividuals(2, sex="M", minAge=4, maxAge=10)); }
 55601 late() { p2.setValue("K", 60); }
-55602 late() { p2.setValue("K", 60); catn("Crater 2021: " + p2.individualCount); }
+55602 late() { p2.setValue("K", 100); catn("Crater 2021: " + p2.individualCount); }
+// changed some things here, initially got a pop of around 100 while it should be 60 in 2021
 
 ////////////////////////////////////////////////////
 //	5. reproduction for crater //////////////////
@@ -262,8 +267,9 @@ reproduction(p2) {
 ////////////////////////////////////////////////////
 //	7. Zoo population with high fitness scaling //////////////////
 ////////////////////////////////////////////////////
-//55491 late() {
-55541 late() {
+55551 late() { /  55501 to make pop in 1920
+// currently making it in 1970 to reduce froh --- forgot what time was the ideal
+// how else to reduce it, apart from making pop later? migrants?
 	sim.addSubpop("p3", 0).setValue("K", 30);
 	// can adjust sex ratio and n migrants if needed
 	migrants_F_zoo = p1.sampleIndividuals(5, sex="F", minAge=2);
@@ -277,8 +283,11 @@ early() {
 	if (exists("p3")) {
 		K_current = p3.getValue("K"); 
 		N_current = max(p3.individualCount, 1); // avoid division by zero
-		p3.fitnessScaling = 1.5 * K_current / N_current; // extra survival
+		p3.fitnessScaling = 1.7 * K_current / N_current; // extra survival
 	}}
+// add 2 import events to zoo
+55591 late() { p3.takeMigrants(p1.sampleIndividuals(2, sex="F", minAge=4, maxAge=10)); }
+55692 late() { p3.takeMigrants(p1.sampleIndividuals(2, sex="M", minAge=4, maxAge=10)); }
 
 // reproduction in zoo
 reproduction(p3) {
@@ -456,4 +465,5 @@ mutationsOfType(m5));
 
 
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
+
 }
