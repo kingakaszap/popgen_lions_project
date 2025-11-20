@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////// 
 initialize() {
 	if (exists("slimgui")) {
+	   setSeed (SEED);
 		// Carrying capacities
 		defineConstant("KGSE_3", 5000);
 		defineConstant("KGSE_4", 5000);
@@ -17,6 +18,11 @@ initialize() {
 		defineConstant("KC_5", 120);
 		defineConstant("KC_6", 50);
 		defineConstant("KC_7", 100);
+		
+		// add stuff that can be defined in command line??
+		// run terminal like this: slim -d SEED=7 -d burnin_id= x, script.txt (txt??)
+
+		defineConstant("burnin_id");
 		
 		defineConstant("M", 0);
 	}
@@ -33,7 +39,10 @@ initialize() {
 	defineConstant("h_wkDel", 0.4);
 	defineConstant("sampleSize", 10);
 	// change this later to sample whole crater pop for statistics
-	defineConstant("Out", "C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/" + "new_populations" + "M=" + M + "_KF=" + KC_7 + "_" + getSeed() + ".csv");
+	
+	defineConstant("Out", "C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/source_pops" + "new_populations" + "M=" + M + "_KF=" + KC_7 + "_" + getSeed() + ".csv");
+	
+	defineConstant("Burnin_to_import","C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/burnins/Source_pop_simulation_snapshot_55400_" + burnin_id + ".txt");
 	
 	// dont forget to change this to my own filepath
 	
@@ -77,7 +86,7 @@ initialize() {
 //	2. Import burnin population //////////////////
 ////////////////////////////////////////////////////
 1 early() {
-	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\popgen\\Source_pop_simulation_snapshot_55400_r1.txt");}
+	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\popgen\\Source_pop_simulation_snapshot_55400_" + "burnin_id" + ".txt");}
 	// ends at 55400 - move everything back by 200 years
 
 ////////////////////////////////////////////////////
@@ -180,7 +189,7 @@ early() {
 ////////////////////////////////////////////////////
 //	5. Make crater pop  events //////////////////
 ////////////////////////////////////////////////////
-55401 late() {
+55401 late() { //split 1820 - save 200 years later? in 601?
 	sim.addSubpop("p2", 0).setValue("K", 100);
 	migrants_F = p1.sampleIndividuals(50, sex="F", minAge=2, maxAge=10);
 	migrants_M = p1.sampleIndividuals(50, sex="M", minAge=2, maxAge=10);
@@ -196,12 +205,12 @@ early() {
 55560 late() { p2.setValue("K", KC_4); catn("Crater 1979: " + p2.individualCount); }
 55562 late() { p2.setValue("K", KC_5); catn("Crater 1981: " + p2.individualCount); }
 55574 late() { p2.takeMigrants(p1.sampleIndividuals(1, sex="M", minAge=4, maxAge=10)); catn("Crater 1993: " + p2.individualCount); }
-55581 late() { p2.setValue("K", KC_6); catn("Crater 2000: " + p2.individualCount); }
+55581 late() { p2.setValue("K", 60); catn("Crater 2000: " + p2.individualCount); }
 55594 late() { p2.takeMigrants(p1.sampleIndividuals(4, sex="M", minAge=4, maxAge=10)); catn("Crater 2013: " + p2.individualCount); }
 55596 late() { p2.takeMigrants(p1.sampleIndividuals(1, sex="M", minAge=4, maxAge=10)); }
 55599 late() { p2.takeMigrants(p1.sampleIndividuals(2, sex="M", minAge=4, maxAge=10)); }
-55601 late() { p2.setValue("K", KC_6); }
-55602 late() { p2.setValue("K", KC_7); catn("Crater 2021: " + p2.individualCount); }
+55601 late() { p2.setValue("K", 60); }
+55602 late() { p2.setValue("K", 60); catn("Crater 2021: " + p2.individualCount); }
 
 ////////////////////////////////////////////////////
 //	5. reproduction for crater //////////////////
@@ -253,7 +262,8 @@ reproduction(p2) {
 ////////////////////////////////////////////////////
 //	7. Zoo population with high fitness scaling //////////////////
 ////////////////////////////////////////////////////
-55491 late() {
+//55491 late() {
+55541 late() {
 	sim.addSubpop("p3", 0).setValue("K", 30);
 	// can adjust sex ratio and n migrants if needed
 	migrants_F_zoo = p1.sampleIndividuals(5, sex="F", minAge=2);
@@ -283,6 +293,12 @@ reproduction(p3) {
 			for (i in seqLen(nOffspring)) {
 				p3.addCrossed(female, father, sex=0.5);
 			}}}}
+			
+// save source populations at present / 2021??
+55601 late() {
+    print("saving simulation");
+    sim.outputFull("C:/Users/Kinga/Desktop/popgen/start_pops_2021/start_pop_simulation_snapshot_55601_r" + burnin_id + ".txt");
+}
 
 ////////////////////////
 // Logs and Stats ////
@@ -304,7 +320,8 @@ if (sim.cycle % 100 == 0){
 
 //// record statistics every xx years
 
-55492:55610 late() { //assuming a split 200 y BP
+// 55492:55610 late() { //assuming a split 200 y BP
+55541:55610 late() { // trying a later zoo pop to keep FROH lower
 	if (sim.cycle % 2 == 0){
 		stats1 = getStats(p1, sampleSize);
 		stats2 = getStats(p2, sampleSize); // change sample size to N at the moment
