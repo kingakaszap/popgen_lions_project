@@ -89,7 +89,7 @@ initialize() {
 ////////////////////////////////////////////////////
 1 early() {
     // could do this better by using the burnin_to_import constant, i think
-	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\popgen\\Source_pop_simulation_snapshot_55400_" + "burnin_id" + ".txt");}
+	sim.readFromPopulationFile("C:\\Users\\Kinga\\OneDrive - University of Edinburgh\\Desktop\\popgen\\Source_pop_simulation_snapshot_55400_r" + "burnin_id" + ".txt");}
 	// ends at 55400 - move everything back by 200 years
      
 
@@ -467,3 +467,4 @@ mutationsOfType(m5));
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
