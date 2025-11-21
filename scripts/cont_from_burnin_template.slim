@@ -267,8 +267,6 @@ reproduction(p2) {
 	catn("zoo 1990: " + p3.individualCount); //double check
 }
 55591 late() { p3.takeMigrants(p1.sampleIndividuals(2, sex="F", minAge=4, maxAge=10)); }
-55692 late() { p3.takeMigrants(p1.sampleIndividuals(2, sex="M", minAge=4, maxAge=10)); }
-
 
 // fitness scaling so its hard to die in the zoo
 early() {
@@ -459,3 +457,4 @@ mutationsOfType(m5));
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
