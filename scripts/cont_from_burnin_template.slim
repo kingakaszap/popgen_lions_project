@@ -255,8 +255,8 @@ reproduction(p2) {
 ////////////////////////////////////////////////////
 //	7. Zoo population with high fitness scaling //////////////////
 ////////////////////////////////////////////////////
-55551 late() { //  55501 to make pop in 1920
-// currently making it in 1970 to reduce froh --- forgot what time was the ideal
+55566 late() { //  55501 to make pop in 1920
+// currently making it in 1980 to reduce froh --- forgot what time was the ideal
 // how else to reduce it, apart from making pop later? migrants?
 	sim.addSubpop("p3", 0).setValue("K", 30);
 	// can adjust sex ratio and n migrants if needed
@@ -293,10 +293,10 @@ reproduction(p3) {
 			}}}}
 
 // save source populations at present / 2021?? ----- does this save all pops?? i hope
-55601 late() {
-    print("saving simulation");
-    sim.outputFull("C:/Users/Kinga/Desktop/popgen/start_pops_2021/start_pop_simulation_snapshot_55601_r" + burnin_id + ".txt");
-}
+// 55601 late() {
+ //   print("saving simulation");
+ //   sim.outputFull("C:/Users/Kinga/Desktop/popgen/start_pops_2021/output.slim
+//}
 
 ////////////////////////
 // Logs and Stats ////
@@ -318,7 +318,7 @@ if (sim.cycle % 100 == 0){
 
 //// record statistics every xx years
 
-55551:55602 late() { //assuming a split 200 y BP 
+55566:55602 late() { //assuming a split 200 y BP 
 // change first number to whenever zoo pop was created !!
 	if (sim.cycle % 2 == 0){
 		stats1 = getStats(p1, sampleSize);
@@ -459,4 +459,3 @@ mutationsOfType(m5));
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
-
