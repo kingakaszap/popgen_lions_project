@@ -159,28 +159,28 @@ reproduction(p2) {
 	self.active = 0;}
 	
 	
-	
-	// Import pop for simulation
-1 early() {
+		// Import pop for simulation
+early() {
 	sim.readFromPopulationFile("C:/Users/rosin/Desktop/popgen/source_pop_res/start_pop_simulation_snapshot_55601_r1.txt");}
 	
 	
 	
-	// 2.1.2 Age-related mortality and density-dependent selection 
-//////////////////////////////////////////////////////////////
-//longevity: 14 years
+////////////////////////////////////////////////////
+//	4. Try to do fitnesss scaling for pops //////////////////
+////////////////////////////////////////////////////
 
-2 early () {
+1 early() {
 	for (s in sim.subpopulations) // but overwritten later for zoo, crater, ideally
 	{
 		inds = s.individuals; // not sure we need this anymore
 		// skip empty subpops
 		//if (size(inds) == 0) {
-		//	s.fitnessScaling = 1.0;}
-			
-			// age and sex specific survival
-			//0.01 for females, no info on males; 0.05 to be conservative
-			L_F= c(0.5,0.2,0.05,0.05,0.15,0.15,0.15,0.15,0.15,0.15,0.4,0.4,0.4,0.4,1);
+		//	s.fitnessScaling = 1.0; // fallback
+			//continue;}
+		
+		// age and sex specific survival
+		//0.01 for females, no info on males; 0.05 to be conservative
+		L_F= c(0.5,0.2,0.05,0.05,0.15,0.15,0.15,0.15,0.15,0.15,0.4,0.4,0.4,0.4,1);
 		L_M= c(0.5,0.4,0.2,0.2,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,1);
 		
 		ages = inds.age;
@@ -205,18 +205,27 @@ reproduction(p2) {
 		inds[m].fitnessScaling = survival_m;
 		inds[f].fitnessScaling = survival_f;
 		
-		s.setValue("K", 1000);
+		s.setValue("K", 2000);
 		K = s.getValue("K");
 		inds_m = s.individuals[m];
 		inds_f = s.individuals[f];
 		
-		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f)));
+		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f))); //works
 		
 		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
 	}
 }
-	
 
+
+// 4. Establish GSE -> Crater migration
+//migration events //every 10 years - 0; 1; 5; 10
+///////////////////////////////////
+
+2 early () { 
+p1.setValue("K", 1000);
+p2.setValue("K", KC_7);
+}
+// This doesn't seem to do anything 
 
 // 4. Establish GSE -> Crater migration
 //migration events //every 10 years - 0; 1; 5; 10
@@ -455,4 +464,5 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
 
