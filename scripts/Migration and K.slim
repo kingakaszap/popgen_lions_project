@@ -127,9 +127,9 @@ early() {
 	{
 		inds = s.individuals; // not sure we need this anymore
 		// skip empty subpops
-		if (size(inds) == 0) {
-			s.fitnessScaling = 1.0; // fallback
-			continue;}
+		// if (size(inds) == 0) {
+		//	s.fitnessScaling = 1.0; // fallback
+		//	continue;}
 		
 		// age and sex specific survival
 		//0.01 for females, no info on males; 0.05 to be conservative
@@ -158,12 +158,12 @@ early() {
 		inds[m].fitnessScaling = survival_m;
 		inds[f].fitnessScaling = survival_f;
 		
-		p1.setValue("K", 2000);
+		s.setValue("K", 1000);
 		K = s.getValue("K");
 		inds_m = s.individuals[m];
 		inds_f = s.individuals[f];
 		
-		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f))); 
+		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f)));
 		
 		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
 	}
@@ -455,3 +455,4 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
