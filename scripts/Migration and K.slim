@@ -65,11 +65,6 @@ initialize() {
 }
 
 
-// Import pop for simulation
-1 early() {
-	sim.readFromPopulationFile("C:/Users/rosin/Desktop/popgen/start_pop_res/start_pop_simulation_snapshot_55601_r.txt");}
-
-
 ////////////////////////////////////////////////////
 //	3. reproduction for GSE //////////////////
 ////////////////////////////////////////////////////
@@ -117,59 +112,6 @@ reproduction(p1) {
 	self.active = 0;}
 
 
-// 2.1.2 Age-related mortality and density-dependent selection 
-//////////////////////////////////////////////////////////////
-//longevity: 14 years
-
-
-early() {
-	for (s in sim.subpopulations) // but overwritten later for zoo, crater, ideally
-	{
-		inds = s.individuals; // not sure we need this anymore
-		// skip empty subpops
-		// if (size(inds) == 0) {
-		//	s.fitnessScaling = 1.0; // fallback
-		//	continue;}
-		
-		// age and sex specific survival
-		//0.01 for females, no info on males; 0.05 to be conservative
-		L_F= c(0.5,0.2,0.05,0.05,0.15,0.15,0.15,0.15,0.15,0.15,0.4,0.4,0.4,0.4,1);
-		L_M= c(0.5,0.4,0.2,0.2,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,1);
-		
-		ages = inds.age;
-		//		mortality = L_F[ages];
-		//		survival = 1 - mortality;
-		//		inds.fitnessScaling = survival;
-		
-		m=(inds.sex=="M");
-		f=(inds.sex=="F");
-		
-		ages_m = ages[m];
-		ages_f = ages[f];
-		
-		mortality_m = L_M[ages_m];
-		mortality_f = L_F[ages_f];
-		
-		//calculate survival based on age
-		survival_m = 1 - mortality_m;
-		survival_f = 1 - mortality_f;
-		
-		//rescale fitness based on age-survival
-		inds[m].fitnessScaling = survival_m;
-		inds[f].fitnessScaling = survival_f;
-		
-		s.setValue("K", 1000);
-		K = s.getValue("K");
-		inds_m = s.individuals[m];
-		inds_f = s.individuals[f];
-		
-		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f)));
-		
-		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
-	}
-}
-
-
 ////////////////////////////////////////////////////
 //	Reproduction for crater //////////////////
 ////////////////////////////////////////////////////
@@ -215,7 +157,65 @@ reproduction(p2) {
 				}}}}
 	// disable this callback for this cycle
 	self.active = 0;}
+	
+	
+	
+	// Import pop for simulation
+1 early() {
+	sim.readFromPopulationFile("C:/Users/rosin/Desktop/popgen/source_pop_res/start_pop_simulation_snapshot_55601_r1.txt");}
+	
+	
+	
+	// 2.1.2 Age-related mortality and density-dependent selection 
+//////////////////////////////////////////////////////////////
+//longevity: 14 years
 
+2 early () {
+	for (s in sim.subpopulations) // but overwritten later for zoo, crater, ideally
+	{
+		inds = s.individuals; // not sure we need this anymore
+		// skip empty subpops
+		//if (size(inds) == 0) {
+		//	s.fitnessScaling = 1.0;}
+			
+			// age and sex specific survival
+			//0.01 for females, no info on males; 0.05 to be conservative
+			L_F= c(0.5,0.2,0.05,0.05,0.15,0.15,0.15,0.15,0.15,0.15,0.4,0.4,0.4,0.4,1);
+		L_M= c(0.5,0.4,0.2,0.2,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,1);
+		
+		ages = inds.age;
+		//		mortality = L_F[ages];
+		//		survival = 1 - mortality;
+		//		inds.fitnessScaling = survival;
+		
+		m=(inds.sex=="M");
+		f=(inds.sex=="F");
+		
+		ages_m = ages[m];
+		ages_f = ages[f];
+		
+		mortality_m = L_M[ages_m];
+		mortality_f = L_F[ages_f];
+		
+		//calculate survival based on age
+		survival_m = 1 - mortality_m;
+		survival_f = 1 - mortality_f;
+		
+		//rescale fitness based on age-survival
+		inds[m].fitnessScaling = survival_m;
+		inds[f].fitnessScaling = survival_f;
+		
+		s.setValue("K", 1000);
+		K = s.getValue("K");
+		inds_m = s.individuals[m];
+		inds_f = s.individuals[f];
+		
+		s.fitnessScaling = K /(s.individualCount * mean(c(survival_m, survival_f)));
+		
+		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
+	}
+}
+	
 
 
 // 4. Establish GSE -> Crater migration
@@ -223,61 +223,61 @@ reproduction(p2) {
 ///////////////////////////////////
 
 //~2031
-310011 late() {
+55604 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2041
-310021 late() {
+55606 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2051
-310031 late() {
+55608 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2061
-310041 late() {
+55610 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2071
-310051 late() {
+55612 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2081
-310061 late() {
+55614 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2091
-310071 late() {
+55616 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2101
-310081 late() {
+55618 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2111
-310091 late() {
+55620 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
 //~2120
-310100 late() {
+55622 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
@@ -291,7 +291,7 @@ reproduction(p2) {
 // Logs and Stats ////
 ////////////////////////
 
-1:55602 late() { //not sure what tick to put here
+1:55622 late() { //not sure what tick to put here
 	if (sim.cycle % 100 == 0){
 		print(sim.cycle);}}
 
@@ -306,7 +306,7 @@ reproduction(p2) {
 // save source populations at present / 2021??
 55601 late() {
 	print("saving simulation");
-	sim.outputFull("C:/Users/rosin/Desktop/popgen/start_pop_res/start_pop_simulation_snapshot_55601_r.txt");
+	sim.outputFull("C:/Users/rosin/Desktop/popgen/Crater_GSE_forward/forward_pop_simulation_snapshot_55601_r.txt");
 }
 
 
@@ -455,4 +455,3 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
-
