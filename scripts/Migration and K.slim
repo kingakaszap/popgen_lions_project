@@ -223,61 +223,61 @@ reproduction(p2) {
 ///////////////////////////////////
 
 //~2031
-55604 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2041
-55606 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2051
-55608 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2061
 55610 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
-//~2071
-55612 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2081
-55614 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2091
-55616 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2101
-55618 late() {
-	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
-	p2.takeMigrants(p1mig);
-}
-
-//~2111
+//~2041
 55620 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
 
+//~2051
+55630 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2061
+55640 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2071
+55650 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2081
+55660 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2091
+55670 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2101
+55680 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
+//~2111
+55690 late() {
+	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
+	p2.takeMigrants(p1mig);
+}
+
 //~2120
-55622 late() {
+55700 late() {
 	p1mig = p1.sampleIndividuals(M, sex="M", minAge=4);
 	p2.takeMigrants(p1mig);
 }
@@ -291,7 +291,7 @@ reproduction(p2) {
 // Logs and Stats ////
 ////////////////////////
 
-1:55622 late() { //not sure what tick to put here
+1:55700 late() { //not sure what tick to put here
 	if (sim.cycle % 100 == 0){
 		print(sim.cycle);}}
 
@@ -304,7 +304,7 @@ reproduction(p2) {
 }
 
 // save source populations at present / 2021??
-55601 late() {
+55700 late() {
 	print("saving simulation");
 	sim.outputFull("C:/Users/rosin/Desktop/popgen/Crater_GSE_forward/forward_pop_simulation_snapshot_55601_r.txt");
 }
@@ -312,7 +312,7 @@ reproduction(p2) {
 
 //// record statistics every xx years
 
-55566:55602 late() { //assuming a split 200 y BP 
+55650:55700 late() { //assuming a split 200 y BP 
 	// change first number to whenever zoo pop was created !!
 	if (sim.cycle % 2 == 0){
 		stats1 = getStats(p1, sampleSize);
@@ -455,3 +455,4 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
