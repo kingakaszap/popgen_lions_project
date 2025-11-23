@@ -309,8 +309,9 @@ if (sim.cycle % 100 == 0){
 // save source populations at present / 2021??
 55601 late() {
     print("saving simulation");
-    sim.outputFull("C:/Users/Kinga/OneDrive - University of Edinburgh/Desktop/popgen/start_pop_simulation_snapshot_55601_r.txt");
+    sim.outputFull("C:/Users/Kinga/Desktop/popgen/start_pops_2021/start_pop_simulation_snapshot_55601_r" + burnin_id + ".txt");
 }
+
 
 
 //// record statistics every xx years
@@ -458,3 +459,4 @@ mutationsOfType(m5));
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
