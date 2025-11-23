@@ -186,7 +186,7 @@ early() {
 
 1 early() {
 p1.setValue("K", 1000);
-p2.setValue("K", 100);
+p2.setValue("K", KC_7);
 p3.setValue("K", 30);
 }
 
@@ -234,7 +234,6 @@ p3.setValue("K", 30);
 		inds[m].fitnessScaling = survival_m;
 		inds[f].fitnessScaling = survival_f;
 		
-		s.setValue("K", 2000);
 		K = s.getValue("K");
 		inds_m = s.individuals[m];
 		inds_f = s.individuals[f];
@@ -493,6 +492,7 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
 
 
 
