@@ -190,15 +190,7 @@ p2.setValue("K", KC_7);
 p3.setValue("K", 30);
 }
 
-// fitness scaling so its hard to die in the zoo
 2 early() {
-	if (exists("p3")) {
-		K_current = p3.getValue("K");
-		N_current = max(p3.individualCount, 1); // avoid division by zero
-		p3.fitnessScaling = 1.7 * K_current / N_current; // extra survival
-	}}
-
-3 early() {
 	for (s in sim.subpopulations) // but overwritten later for zoo, crater, ideally
 	{
 		inds = s.individuals; // not sure we need this anymore
@@ -243,6 +235,14 @@ p3.setValue("K", 30);
 		s.individuals.tagF = inds.fitnessScaling*s.fitnessScaling;
 	}
 }
+
+// fitness scaling so its hard to die in the zoo
+3 early() {
+	if (exists("p3")) {
+		K_current = p3.getValue("K");
+		N_current = max(p3.individualCount, 1); // avoid division by zero
+		p3.fitnessScaling = 1.7 * K_current / N_current; // extra survival
+	}}
 
 
 // 4. Establish GSE -> Crater migration
@@ -492,6 +492,7 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
 
 
 
