@@ -157,12 +157,27 @@ reproduction(p2) {
 				}}}}
 	// disable this callback for this cycle
 	self.active = 0;}
+
+
+//// REPRODUCTION FOR ZOO////////
+////////////////////////////////
+reproduction(p3) {
+	matureFemales = p3.subsetIndividuals(sex="F", minAge=2, maxAge=15);
+	matureMales   = p3.subsetIndividuals(sex="M", minAge=2, maxAge=15);
+	
+	// can change reproduction if needed, this is just at random
+	for (female in matureFemales) {
+		if (size(matureMales) > 0) {
+			father = sample(matureMales, 1);
+			nOffspring = sample(1:3, 1, replace=T, weights = c(0.2,0.2,0.6));
+			for (i in seqLen(nOffspring)) {
+				p3.addCrossed(female, father, sex=0.5);
+			}}}}
 	
 	
-		// Import pop for simulation
+// Import pop for simulation
 early() {
 	sim.readFromPopulationFile("C:/Users/rosin/Desktop/popgen/source_pop_res/start_pop_simulation_snapshot_55601_r1.txt");}
-	
 	
 	
 ////////////////////////////////////////////////////
@@ -170,6 +185,20 @@ early() {
 ////////////////////////////////////////////////////
 
 1 early() {
+p1.setValue("K", 1000);
+p2.setValue("K", 100);
+p3.setValue("K", 30);
+}
+
+// fitness scaling so its hard to die in the zoo
+2 early() {
+	if (exists("p3")) {
+		K_current = p3.getValue("K");
+		N_current = max(p3.individualCount, 1); // avoid division by zero
+		p3.fitnessScaling = 1.7 * K_current / N_current; // extra survival
+	}}
+
+3 early() {
 	for (s in sim.subpopulations) // but overwritten later for zoo, crater, ideally
 	{
 		inds = s.individuals; // not sure we need this anymore
@@ -464,5 +493,6 @@ function (s) getStats(o pop, i sampSize)
 	return(mean(pop.cachedFitness(NULL)/pop.individuals.tagF)+ "," + mean(ind_het) + ","  + mean(B_pop) + "," + mean(ROH_length_sumPerInd_100Kb)/seqLength + "," + mean(Num_vStrDel_muts) + "," + mean(Num_strDel_muts)+ "," + mean(Num_modDel_muts) + "," + mean(Num_wkDel_muts) + "," + mean(Num_neut_muts));
 
 }
+
 
 
